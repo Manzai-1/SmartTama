@@ -74,15 +74,18 @@ contract Tamagochi{
         require(creatures[msg.sender].foodLvl < 100, "Im going to puke... bleh..");
 
         creatures[msg.sender].foodLvl += meals[meal].points;
+        calculateStats();
     }
 
     function playtime () public {
         require(creatures[msg.sender].happinessLvl != 0, "Ohno i got bored to death!");
         require(creatures[msg.sender].happinessLvl<100, "Thank you for playing with me, now leave me alone!");
         creatures[msg.sender].happinessLvl+=5;
+        calculateStats();
     }      
 
     function calculateStats() public {
-        
+        creatures[msg.sender].foodLvl -= (uint16((block.timestamp - creatures[msg.sender].lastFed) / 25));
+        creatures[msg.sender].happinessLvl -= (uint16((block.timestamp - creatures[msg.sender].lastPlay) / 25));
     }
 }
