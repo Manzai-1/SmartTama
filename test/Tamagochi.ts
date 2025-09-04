@@ -19,7 +19,22 @@ describe('Tamagochi', () => {
 
       const name = 'Lille vän';
       await tamagochi.addTama(name);
-      expect(await tamagochi.getMyCreature()).to.equal(name);
+      expect(await tamagochi.getMyCreatureName()).to.equal(name);
+    });
+  });
+
+  describe('Feed creature', () => {
+    it('should feed the tamagochi and increase its foodLvl', async () => {
+      const { tamagochi } = await tamagotchiFixture();
+
+      await tamagochi.addTama("Pelle");
+
+      const foodLvlBefore = await tamagochi.getMyCreatureFoodLvl();
+      await tamagochi.feedMyCreature("Steak");
+
+      const foodLvlAfter = await tamagochi.getMyCreatureFoodLvl(); 
+
+      expect(foodLvlBefore).to.be.lessThan(foodLvlAfter);
     });
   });
 });
