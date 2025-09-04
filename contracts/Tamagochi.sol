@@ -31,7 +31,6 @@ contract Tamagochi{
 
  function getMyCreature() public  view returns (string memory name){
     name = creatures[msg.sender].name;
-
  }
 
 }
