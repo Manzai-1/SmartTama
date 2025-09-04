@@ -72,4 +72,11 @@ contract Tamagochi{
 
 
 
+ function playtime () public{
+   require(creatures[msg.sender].happinessLvl != 0, "Ohno i got bored to death!");
+   require(creatures[msg.sender].happinessLvl<100, "Thank you for playing with me, now leave me alone!");
+   creatures[msg.sender].happinessLvl+=5;
+
+ }
+
 }

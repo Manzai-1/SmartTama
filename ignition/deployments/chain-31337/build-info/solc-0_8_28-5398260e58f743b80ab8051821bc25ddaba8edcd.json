@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-5398260e58f743b80ab8051821bc25ddaba8edcd",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/Tamagochi.sol": "project/contracts/Tamagochi.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Tamagochi.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity 0.8.28;\n\ncontract Tamagochi{\n    address private owner; \n\n struct Meals {\n    string name;\n    uint16 points;\n }\n struct TamaCreature {\n    string name;\n    uint16 foodLvl;\n    uint16 happinessLvl;\n }\n \n constructor() {\n    owner = msg.sender;\n\n }\n\n mapping (address => TamaCreature) creatures;\n\n function addTama( string memory name) public{\n    creatures[msg.sender] = (TamaCreature({\n        name: name,\n        foodLvl: 50,\n        happinessLvl: 50\n    }));\n }\n\n function getMyCreature() public  view returns (string memory name){\n    name = creatures[msg.sender].name;\n }\n\n}"
+      }
+    }
+  }
+}
