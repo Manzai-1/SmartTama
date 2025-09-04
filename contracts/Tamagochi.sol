@@ -29,8 +29,9 @@ contract Tamagochi{
     }));
  }
 
- function getMyCreature() public  view returns (string memory name){
+ function getMyCreature() public  view returns (string memory name, uint16 foodLvl, uint16 happinessLvl){
     name = creatures[msg.sender].name;
+
  }
 
 }
