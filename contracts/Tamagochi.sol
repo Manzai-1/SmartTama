@@ -14,8 +14,8 @@ contract Tamagochi{
     uint16 happinessLvl;
  }
  
- constructor(address customOwner) {
-    owner = customOwner; 
+ constructor() {
+    owner = msg.sender;
 
  }
 
