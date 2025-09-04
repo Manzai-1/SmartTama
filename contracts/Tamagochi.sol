@@ -17,6 +17,7 @@ contract Tamagochi{
         uint16 happinessLvl;
         uint lastFed; 
         uint lastPlay; 
+        bool exists;
     }
 
     enum TamaStages { Baby, Toddler, Child, Teenager, Adult, Senior }
@@ -53,7 +54,8 @@ contract Tamagochi{
             foodLvl: 50,
             happinessLvl: 50,
             lastFed: block.timestamp,
-            lastPlay: block.timestamp
+            lastPlay: block.timestamp,
+            exists: true
         }));
     }
 
