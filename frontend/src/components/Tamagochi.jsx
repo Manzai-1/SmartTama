@@ -5,8 +5,11 @@ import { ethers } from 'ethers';
 const Tamagochi = () => {
   const [readContract, setReadContract] = useState();
   const [writeContract, setWriteContract] = useState();
-  const [creatureName, setCreatureName] = useState('');
   const [giveCreatureName, setGiveCreatureName] = useState('');
+
+  const [creatureName, setCreatureName] = useState('');
+  const [creatureHungry, setCreatureHungry] = useState('');
+  const [creatureHappyness, setCreatureHappyness] = useState('');
 
   useEffect(() => {
     if (readContract) return;
@@ -42,13 +45,64 @@ const Tamagochi = () => {
   const getCreatureName = async () => {
     try {
       const name = await readContract.getMyCreatureName();
-      console.log('Got here!');
-      console.log('Creature name:', name);
+
       setCreatureName(name);
 
-      return { success: true, goodNews: 'Gochi name is:' };
+      return { success: true, goodNews: 'It seems to work fine!' };
     } catch (error) {
       console.error('Error when fetching creature name:', error);
+      return { success: false, data: error.message };
+    }
+  };
+
+  const getHungerLevel = async () => {
+    try {
+      const hungeLvl = await readContract.getMyCreatureFoodLvl();
+
+      setCreatureHungry(hungeLvl);
+
+      return { success: true, goodNews: 'It seems to work fine!' };
+    } catch (error) {
+      console.error('Error when fetching creature name:', error);
+      return { success: false, data: error.message };
+    }
+  };
+
+  const feedCreature = async (foodType) => {
+    try {
+      const response = await writeContract.feedMyCreature(foodType);
+      const tx = await response.wait();
+
+      console.log(tx);
+
+      return { success: true, goodNews: 'Creature feeded!' };
+    } catch (error) {
+      return { success: false, data: error.message };
+    }
+  };
+
+  const getHappynessLevel = async () => {
+    try {
+      const happyLvl = await readContract.getMyCreatureHappinessLvl();
+
+      setCreatureHappyness(happyLvl);
+
+      return { success: true, goodNews: 'It seems to work fine!' };
+    } catch (error) {
+      console.error('Error when fetching creature name:', error);
+      return { success: false, data: error.message };
+    }
+  };
+
+  const playWithCreature = async () => {
+    try {
+      const response = await writeContract.playtime();
+      const tx = await response.wait();
+
+      console.log(tx);
+
+      return { success: true, goodNews: 'Creature happier!' };
+    } catch (error) {
       return { success: false, data: error.message };
     }
   };
@@ -66,7 +120,19 @@ const Tamagochi = () => {
         Create Tamagochi
       </button>
       <button onClick={() => getCreatureName()}>Get name</button>
-      {creatureName && <p>{creatureName}</p>}
+      <button onClick={() => getHungerLevel()}>How hungry?</button>
+      <button
+        onClick={() => {
+          feedCreature('Kibble');
+        }}>
+        Feed Kibble
+      </button>
+      <button onClick={() => getHappynessLevel()}>How happy?</button>
+      <button onClick={() => playWithCreature()}>Play</button>
+
+      {creatureName && <p>Name: {creatureName}</p>}
+      {creatureHungry && <p>Hunger: {creatureHungry}</p>}
+      {creatureHappyness && <p>Happyness: {creatureHappyness}</p>}
     </div>
   );
 };
