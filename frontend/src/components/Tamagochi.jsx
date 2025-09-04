@@ -5,6 +5,8 @@ import { ethers } from 'ethers';
 const Tamagochi = () => {
   const [readContract, setReadContract] = useState();
   const [writeContract, setWriteContract] = useState();
+  const [creatureName, setCreatureName] = useState('');
+  const [giveCreatureName, setGiveCreatureName] = useState('');
 
   useEffect(() => {
     if (readContract) return;
@@ -25,9 +27,47 @@ const Tamagochi = () => {
     setupContract();
   }, [readContract, writeContract]);
 
-  console.log();
+  const createCreature = async (name) => {
+    try {
+      const response = await writeContract.addTama(name);
+      const tx = await response.wait();
 
-  return <div></div>;
+      console.log(tx);
+
+      return { success: true, goodNews: 'Gochi created' };
+    } catch (error) {
+      return { success: false, data: error.message };
+    }
+  };
+
+  const getCreatureName = async () => {
+    try {
+      const name = await readContract.getMyCreature();
+      console.log('Creature name:', name);
+      setCreatureName(name);
+
+      return { success: true, goodNews: 'Gochi name!' };
+    } catch (error) {
+      return { success: false, data: error.message };
+    }
+  };
+
+  return (
+    <div>
+      <form action="">
+        <input
+          type="text"
+          value={giveCreatureName}
+          onChange={(e) => setGiveCreatureName(e.target.value)}
+        />
+      </form>
+      <button onClick={() => createCreature(giveCreatureName)}>
+        Create Tamagochi
+      </button>
+      <button onClick={() => getCreatureName()}>Get name</button>
+      {creatureName && <p>{creatureName}</p>}
+    </div>
+  );
 };
 
 export default Tamagochi;
