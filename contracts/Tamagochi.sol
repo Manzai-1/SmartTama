@@ -15,6 +15,7 @@ contract Tamagochi{
         string name;
         uint16 foodLvl;
         uint16 happinessLvl;
+        bool exists;
     }
 
     mapping(string => Meal) public meals;
@@ -43,11 +44,17 @@ contract Tamagochi{
 
     mapping (address => TamaCreature) creatures;
 
-    function addTama( string memory name) public{
+    modifier doesNotExists(bool exists) {
+      require(!exists, "You can only have one creature");
+      _;
+    }
+
+    function addTama( string memory name) public doesNotExists(creatures[msg.sender].exists){
         creatures[msg.sender] = (TamaCreature({
             name: name,
             foodLvl: 50,
-            happinessLvl: 50
+            happinessLvl: 50,
+            exists: true
         }));
     }
 
