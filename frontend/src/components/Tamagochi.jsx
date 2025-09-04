@@ -21,7 +21,6 @@ const Tamagochi = () => {
 
       setReadContract(rContract);
       setWriteContract(wContract);
-      [readContract, writeContract];
     };
 
     setupContract();
@@ -42,12 +41,14 @@ const Tamagochi = () => {
 
   const getCreatureName = async () => {
     try {
-      const name = await readContract.getMyCreature();
+      const name = await readContract.getMyCreatureName();
+      console.log('Got here!');
       console.log('Creature name:', name);
       setCreatureName(name);
 
-      return { success: true, goodNews: 'Gochi name!' };
+      return { success: true, goodNews: 'Gochi name is:' };
     } catch (error) {
+      console.error('Error when fetching creature name:', error);
       return { success: false, data: error.message };
     }
   };
