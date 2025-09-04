@@ -51,12 +51,25 @@ contract Tamagochi{
         }));
     }
 
-    function getMyCreature() public  view returns (string memory name){
+    function getMyCreatureName() public  view returns (string memory name){
         name = creatures[msg.sender].name;
     }
 
+    function getMyCreatureFoodLvl() public  view returns (uint16 foodLvl){
+        foodLvl = creatures[msg.sender].foodLvl;
+    }
+
+    function getMyCreatureHappinessLvl() public  view returns (uint16 happinessLvl){
+        happinessLvl = creatures[msg.sender].happinessLvl;
+    }
+
     function feedMyCreature(string memory meal) public {
+        require(meals[meal].exists, "This food is not available.");
+        require(creatures[msg.sender].foodLvl < 100, "Im going to puke... bleh..");
+
         creatures[msg.sender].foodLvl += meals[meal].points;
     }
+
+
 
 }
