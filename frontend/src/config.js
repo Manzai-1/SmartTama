@@ -1,4 +1,4 @@
-export const address = '0x809d550fca64d94Bd9F66E60752A544199cfAC3D';
+export const address = '0x5302E909d1e93e30F05B5D6Eea766363D14F9892';
 
 export const abi = [
   {
@@ -20,6 +20,20 @@ export const abi = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'attemptAdvancement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'calculateStats',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'string',
@@ -30,6 +44,19 @@ export const abi = [
     name: 'feedMyCreature',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getCreatureStage',
+    outputs: [
+      {
+        internalType: 'enum Tamagochi.TamaStages',
+        name: '',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
