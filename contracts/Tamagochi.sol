@@ -97,6 +97,11 @@ contract Tamagochi{
         creatures[msg.sender].foodLvl += meals[meal].points;
         calculateStats();
         attemptAdvancement();
+
+        if(creatures[msg.sender].foodLvl >100){
+            creatures[msg.sender].foodLvl =100;
+        }
+        
     }
 
     function playtime() public isAlive() {
@@ -105,6 +110,10 @@ contract Tamagochi{
         creatures[msg.sender].happinessLvl+=5;
         calculateStats();
         attemptAdvancement();
+
+        if(creatures[msg.sender].happinessLvl >100){
+            creatures[msg.sender].happinessLvl =100;
+        }
     }      
 
     function calculateStats() public isAlive() {
