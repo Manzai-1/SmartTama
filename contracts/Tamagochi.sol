@@ -115,6 +115,8 @@ contract Tamagochi{
 
         if(isFoodFull && isHappinessFull) {
             creatures[msg.sender].stage = TamaStages(uint(creatures[msg.sender].stage) +1);
+            creatures[msg.sender].foodLvl = 50;
+            creatures[msg.sender].happinessLvl = 50;
         }
     }
 }
