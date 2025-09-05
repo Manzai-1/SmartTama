@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { abi, address } from '../config';
 import { ethers } from 'ethers';
+import Stats from './Stats';
 
 const Tamagochi = () => {
   const [readContract, setReadContract] = useState();
@@ -36,6 +37,9 @@ const Tamagochi = () => {
 
       console.log(tx);
 
+      getCreatureName();
+      getStats();
+
       return { success: true, goodNews: 'Gochi created' };
     } catch (error) {
       return { success: false, data: error.message };
@@ -58,9 +62,7 @@ const Tamagochi = () => {
   const getHungerLevel = async () => {
     try {
       const hungeLvl = await readContract.getMyCreatureFoodLvl();
-
       setCreatureHungry(hungeLvl);
-
       return { success: true, goodNews: 'It seems to work fine!' };
     } catch (error) {
       console.error('Error when fetching creature name:', error);
@@ -75,6 +77,7 @@ const Tamagochi = () => {
 
       console.log(tx);
 
+      getStats();
       return { success: true, goodNews: 'Creature feeded!' };
     } catch (error) {
       return { success: false, data: error.message };
@@ -84,9 +87,7 @@ const Tamagochi = () => {
   const getHappynessLevel = async () => {
     try {
       const happyLvl = await readContract.getMyCreatureHappinessLvl();
-
       setCreatureHappyness(happyLvl);
-
       return { success: true, goodNews: 'It seems to work fine!' };
     } catch (error) {
       console.error('Error when fetching creature name:', error);
@@ -101,10 +102,19 @@ const Tamagochi = () => {
 
       console.log(tx);
 
+      getStats();
       return { success: true, goodNews: 'Creature happier!' };
     } catch (error) {
       return { success: false, data: error.message };
     }
+  };
+
+  const getStats = async () => {
+    // Get happieness
+    getHappynessLevel();
+
+    // Get hunger
+    getHungerLevel();
   };
 
   return (
@@ -119,20 +129,21 @@ const Tamagochi = () => {
       <button onClick={() => createCreature(giveCreatureName)}>
         Create Tamagochi
       </button>
-      <button onClick={() => getCreatureName()}>Get name</button>
-      <button onClick={() => getHungerLevel()}>How hungry?</button>
+
       <button
         onClick={() => {
           feedCreature('Kibble');
         }}>
         Feed Kibble
       </button>
-      <button onClick={() => getHappynessLevel()}>How happy?</button>
+
       <button onClick={() => playWithCreature()}>Play</button>
 
-      {creatureName && <p>Name: {creatureName}</p>}
-      {creatureHungry && <p>Hunger: {creatureHungry}</p>}
-      {creatureHappyness && <p>Happyness: {creatureHappyness}</p>}
+      <Stats
+        name={creatureName}
+        hunger={creatureHungry}
+        happiness={creatureHappyness}
+      />
     </div>
   );
 };
