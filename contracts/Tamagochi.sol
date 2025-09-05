@@ -23,6 +23,12 @@ contract Tamagochi{
     enum TamaStages { Baby, Toddler, Child, Teenager, Adult, Senior }
 
     mapping(string => Meal) public meals;
+    mapping (address => TamaCreature) creatures;
+
+    modifier doesNotExists(bool exists) {
+      require(!exists, "You can only have one creature");
+      _;
+    }
 
     constructor() {
         owner = msg.sender;
@@ -46,9 +52,7 @@ contract Tamagochi{
         }));
     }
 
-    mapping (address => TamaCreature) creatures;
-
-    function addTama( string memory name) public {
+    function addTama( string memory name) public doesNotExists(creatures[msg.sender].exists) {
         creatures[msg.sender] = (TamaCreature({
             name: name,
             foodLvl: 50,
