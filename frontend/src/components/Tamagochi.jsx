@@ -4,6 +4,16 @@ import { ethers } from 'ethers';
 import Stats from './Stats';
 
 const Tamagochi = () => {
+  const stageImage = [
+    './src/assets/stage_0.png',
+    './src/assets/stage_1.png',
+    './src/assets/stage_2.png',
+    './src/assets/stage_3.png',
+    './src/assets/stage_4.png',
+    './src/assets/stage_5.png',
+    './src/assets/stage_6.png',
+    './src/assets/stage_7.png',
+  ];
   const [readContract, setReadContract] = useState();
   const [writeContract, setWriteContract] = useState();
   const [giveCreatureName, setGiveCreatureName] = useState('');
@@ -113,7 +123,7 @@ const Tamagochi = () => {
   const getCreatureStage = async () => {
     try {
       const creatureStage = await readContract.getCreatureStage();
-      setCreatureStage(creatureStage);
+      setCreatureStage(Number(creatureStage + 1));
       return { success: true, goodNews: 'It seems to work fine!' };
     } catch (error) {
       console.error('Error when fetching creature name:', error);
@@ -136,6 +146,11 @@ const Tamagochi = () => {
           onChange={(e) => setGiveCreatureName(e.target.value)}
         />
       </form>
+
+      <div>
+        <img src={stageImage[creatureStage]} alt="stage" />
+      </div>
+
       <button onClick={() => createCreature(giveCreatureName)}>
         Create Tamagochi
       </button>
