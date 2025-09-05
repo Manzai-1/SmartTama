@@ -4,6 +4,7 @@ pragma solidity 0.8.28;
 contract Tamagochi{
 
     address private owner; 
+    enum TamaStages { Baby, Toddler, Child, Teenager, Adult, Senior, Dead }
 
     struct Meal {
         string name;
@@ -18,9 +19,8 @@ contract Tamagochi{
         uint lastFed; 
         uint lastPlay; 
         bool exists;
+        TamaStages stage;
     }
-
-    enum TamaStages { Baby, Toddler, Child, Teenager, Adult, Senior }
 
     mapping(string => Meal) public meals;
     mapping (address => TamaCreature) creatures;
@@ -28,6 +28,15 @@ contract Tamagochi{
     modifier doesNotExists(bool exists) {
       require(!exists, "You can only have one creature");
       _;
+    }
+
+    modifier isAlive() {
+        require(
+            creatures[msg.sender].foodLvl != 0 && 
+            creatures[msg.sender].happinessLvl != 0 && 
+            creatures[msg.sender].stage != TamaStages.Dead,
+            "Creature is dead! :(");
+        _;
     }
 
     constructor() {
@@ -59,7 +68,8 @@ contract Tamagochi{
             happinessLvl: 50,
             lastFed: block.timestamp,
             lastPlay: block.timestamp,
-            exists: true
+            exists: true,
+            stage: TamaStages.Baby
         }));
     }
 
@@ -75,7 +85,7 @@ contract Tamagochi{
         happinessLvl = creatures[msg.sender].happinessLvl;
     }
 
-    function feedMyCreature(string memory meal) public {
+    function feedMyCreature(string memory meal) public isAlive() {
         require(meals[meal].exists, "This food is not available.");
         require(creatures[msg.sender].foodLvl < 100, "Im going to puke... bleh..");
 
@@ -83,15 +93,24 @@ contract Tamagochi{
         calculateStats();
     }
 
-    function playtime () public {
+    function playtime () public isAlive() {
         require(creatures[msg.sender].happinessLvl != 0, "Ohno i got bored to death!");
         require(creatures[msg.sender].happinessLvl<100, "Thank you for playing with me, now leave me alone!");
         creatures[msg.sender].happinessLvl+=5;
         calculateStats();
     }      
 
-    function calculateStats() public {
+    function calculateStats() public isAlive() {
         creatures[msg.sender].foodLvl -= (uint16((block.timestamp - creatures[msg.sender].lastFed) / 25));
         creatures[msg.sender].happinessLvl -= (uint16((block.timestamp - creatures[msg.sender].lastPlay) / 25));
+    }
+
+    function attemptAdvancement() public {
+        bool isFoodFull = creatures[msg.sender].foodLvl >= 100;
+        bool isHappinessFull = creatures[msg.sender].happinessLvl >= 100;
+
+        if(isFoodFull && isHappinessFull) {
+            creatures[msg.sender].stage = TamaStages(uint(creatures[msg.sender].stage) +1);
+        }
     }
 }
