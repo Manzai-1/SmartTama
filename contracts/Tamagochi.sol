@@ -6,6 +6,8 @@ contract Tamagochi{
     address private owner; 
     enum TamaStages { Baby, Toddler, Child, Teenager, Adult, Senior, Dead }
 
+    uint tickRate = 5000;
+
     struct Meal {
         string name;
         uint16 points;
@@ -101,8 +103,8 @@ contract Tamagochi{
     }      
 
     function calculateStats() public isAlive() {
-        creatures[msg.sender].foodLvl -= (uint16((block.timestamp - creatures[msg.sender].lastFed) / 25));
-        creatures[msg.sender].happinessLvl -= (uint16((block.timestamp - creatures[msg.sender].lastPlay) / 25));
+        creatures[msg.sender].foodLvl -= (uint16((block.timestamp - creatures[msg.sender].lastFed) / tickRate));
+        creatures[msg.sender].happinessLvl -= (uint16((block.timestamp - creatures[msg.sender].lastPlay) / tickRate));
     }
 
     function attemptAdvancement() public {
