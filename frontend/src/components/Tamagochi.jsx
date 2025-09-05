@@ -153,6 +153,7 @@ const Tamagochi = () => {
         name={creatureName}
         hunger={creatureHungry}
         happiness={creatureHappyness}
+        stage={creatureStage}
       />
     </div>
   );
