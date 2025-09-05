@@ -21,7 +21,7 @@ const Tamagochi = () => {
   const [creatureName, setCreatureName] = useState('');
   const [creatureHungry, setCreatureHungry] = useState('');
   const [creatureHappyness, setCreatureHappyness] = useState('');
-  const [creatureStage, setCreatureStage] = useState('');
+  const [creatureStage, setCreatureStage] = useState(0);
 
   useEffect(() => {
     if (readContract) return;
@@ -123,7 +123,7 @@ const Tamagochi = () => {
   const getCreatureStage = async () => {
     try {
       const creatureStage = await readContract.getCreatureStage();
-      setCreatureStage(Number(creatureStage + 1));
+      setCreatureStage(Number(creatureStage) + 1);
       return { success: true, goodNews: 'It seems to work fine!' };
     } catch (error) {
       console.error('Error when fetching creature name:', error);
