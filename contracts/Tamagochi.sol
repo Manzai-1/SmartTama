@@ -93,16 +93,27 @@ contract Tamagochi{
 
     function feedMyCreature(string memory meal) public isAlive() {
         require(meals[meal].exists, "This food is not available.");
-
+        require(creatures[msg.sender].foodLvl < 100, "Im going to puke... bleh..");
         creatures[msg.sender].foodLvl += meals[meal].points;
         calculateStats();
         attemptAdvancement();
+
+        if(creatures[msg.sender].foodLvl >100){
+            creatures[msg.sender].foodLvl =100;
+        }
+        
     }
 
     function playtime() public isAlive() {
         require(creatures[msg.sender].happinessLvl != 0, "Ohno i got bored to death!");
+        require(creatures[msg.sender].happinessLvl<100, "Thank you for playing with me, now leave me alone!");
         creatures[msg.sender].happinessLvl+=5;
+        calculateStats();
         attemptAdvancement();
+
+        if(creatures[msg.sender].happinessLvl >100){
+            creatures[msg.sender].happinessLvl =100;
+        }
     }      
 
     function calculateStats() public isAlive() {
