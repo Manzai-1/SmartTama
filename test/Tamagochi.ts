@@ -27,14 +27,28 @@ describe('Tamagochi', () => {
     it('should feed the tamagochi and increase its foodLvl', async () => {
       const { tamagochi } = await tamagotchiFixture();
 
-      await tamagochi.addTama("Pelle");
+      await tamagochi.addTama('Pelle');
 
       const foodLvlBefore = await tamagochi.getMyCreatureFoodLvl();
-      await tamagochi.feedMyCreature("Steak");
+      await tamagochi.feedMyCreature('Steak');
 
-      const foodLvlAfter = await tamagochi.getMyCreatureFoodLvl(); 
+      const foodLvlAfter = await tamagochi.getMyCreatureFoodLvl();
 
       expect(foodLvlBefore).to.be.lessThan(foodLvlAfter);
+    });
+  });
+
+  describe('Playtime', () => {
+    it('should increase its happinessLvl when playing', async () => {
+      const { tamagochi } = await tamagotchiFixture();
+      await tamagochi.addTama('Evert');
+
+      const happinessLvlBefore = await tamagochi.getMyCreatureHappinessLvl();
+      await tamagochi.playtime();
+
+      const happinessLvlAfter = await tamagochi.getMyCreatureHappinessLvl();
+
+      expect(happinessLvlBefore).to.be.lessThan(happinessLvlAfter);
     });
   });
 });
