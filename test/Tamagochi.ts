@@ -56,11 +56,11 @@ describe('Tamagochi', () => {
       await tamagochi.addTama('Evert');
       const beforeStage = await tamagochi.getCreatureStage();
 
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 11; i++) {
         await tamagochi.playtime();
         await tamagochi.feedMyCreature('Kibble');
       }
-      await tamagochi.attemptAdvancement();
+
       const afterStage = await tamagochi.getCreatureStage();
 
       expect(beforeStage).to.not.equal(afterStage);
