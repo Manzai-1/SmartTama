@@ -96,12 +96,13 @@ contract Tamagochi{
 
         creatures[msg.sender].foodLvl += meals[meal].points;
         calculateStats();
+        attemptAdvancement();
     }
 
     function playtime() public isAlive() {
         require(creatures[msg.sender].happinessLvl != 0, "Ohno i got bored to death!");
         creatures[msg.sender].happinessLvl+=5;
-    
+        attemptAdvancement();
     }      
 
     function calculateStats() public isAlive() {
