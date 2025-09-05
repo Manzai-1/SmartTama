@@ -15,8 +15,12 @@ contract Tamagochi{
         string name;
         uint16 foodLvl;
         uint16 happinessLvl;
+        uint lastFed; 
+        uint lastPlay; 
         bool exists;
     }
+
+    enum TamaStages { Baby, Toddler, Child, Teenager, Adult, Senior }
 
     mapping(string => Meal) public meals;
 
@@ -44,16 +48,13 @@ contract Tamagochi{
 
     mapping (address => TamaCreature) creatures;
 
-    modifier doesNotExists(bool exists) {
-      require(!exists, "You can only have one creature");
-      _;
-    }
-
-    function addTama( string memory name) public doesNotExists(creatures[msg.sender].exists){
+    function addTama( string memory name) public {
         creatures[msg.sender] = (TamaCreature({
             name: name,
             foodLvl: 50,
             happinessLvl: 50,
+            lastFed: block.timestamp,
+            lastPlay: block.timestamp,
             exists: true
         }));
     }
@@ -75,15 +76,18 @@ contract Tamagochi{
         require(creatures[msg.sender].foodLvl < 100, "Im going to puke... bleh..");
 
         creatures[msg.sender].foodLvl += meals[meal].points;
+        calculateStats();
     }
 
+    function playtime () public {
+        require(creatures[msg.sender].happinessLvl != 0, "Ohno i got bored to death!");
+        require(creatures[msg.sender].happinessLvl<100, "Thank you for playing with me, now leave me alone!");
+        creatures[msg.sender].happinessLvl+=5;
+        calculateStats();
+    }      
 
-
- function playtime () public{
-   require(creatures[msg.sender].happinessLvl != 0, "Ohno i got bored to death!");
-   require(creatures[msg.sender].happinessLvl<100, "Thank you for playing with me, now leave me alone!");
-   creatures[msg.sender].happinessLvl+=5;
-
- }
-
+    function calculateStats() public {
+        creatures[msg.sender].foodLvl -= (uint16((block.timestamp - creatures[msg.sender].lastFed) / 25));
+        creatures[msg.sender].happinessLvl -= (uint16((block.timestamp - creatures[msg.sender].lastPlay) / 25));
+    }
 }
