@@ -1,9 +1,10 @@
 import React from 'react';
 
-const Stats = ({ hunger, happiness, name }) => {
+const Stats = ({ hunger, happiness, name, stage }) => {
   return (
     <div className="stats-card">
       <h5>Name: {name}</h5>
+      <p>Stage: {stage}</p>
       <div className="gochi-stats">
         Hunger:
         <div className="stats-container">
