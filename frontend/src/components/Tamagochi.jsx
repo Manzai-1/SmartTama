@@ -139,13 +139,15 @@ const Tamagochi = () => {
 
   return (
     <div>
-      <form action="">
-        <input
-          type="text"
-          value={giveCreatureName}
-          onChange={(e) => setGiveCreatureName(e.target.value)}
-        />
-      </form>
+      {!creatureName && (
+        <form action="">
+          <input
+            type="text"
+            value={giveCreatureName}
+            onChange={(e) => setGiveCreatureName(e.target.value)}
+          />
+        </form>
+      )}
 
       <div>
         <img src={stageImage[creatureStage]} alt="stage" />
@@ -160,6 +162,12 @@ const Tamagochi = () => {
           feedCreature('Kibble');
         }}>
         Feed Kibble
+      </button>
+      <button
+        onClick={() => {
+          feedCreature('Steak');
+        }}>
+        Feed Steak
       </button>
 
       <button onClick={() => playWithCreature()}>Play</button>
