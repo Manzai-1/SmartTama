@@ -5,8 +5,6 @@ const { ethers } = await network.connect();
 
 describe('Tamagochi', () => {
   async function tamagotchiFixture() {
-    const [owner] = await ethers.getSigners();
-
     const Tamagochi = await ethers.getContractFactory('Tamagochi');
     const tamagochi = await Tamagochi.deploy();
 
@@ -49,6 +47,23 @@ describe('Tamagochi', () => {
       const happinessLvlAfter = await tamagochi.getMyCreatureHappinessLvl();
 
       expect(happinessLvlBefore).to.be.lessThan(happinessLvlAfter);
+    });
+  });
+
+  describe('attemptAdvance', () => {
+    it('should level up charachter', async () => {
+      const { tamagochi } = await tamagotchiFixture();
+      await tamagochi.addTama('Evert');
+      const beforeStage = await tamagochi.getCreatureStage();
+
+      for (let i = 0; i < 100; i++) {
+        await tamagochi.playtime();
+        await tamagochi.feedMyCreature('Kibble');
+      }
+      await tamagochi.attemptAdvancement();
+      const afterStage = await tamagochi.getCreatureStage();
+
+      expect(beforeStage).to.not.equal(afterStage);
     });
   });
 });
