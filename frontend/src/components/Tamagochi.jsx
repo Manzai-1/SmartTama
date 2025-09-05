@@ -4,6 +4,14 @@ import { ethers } from 'ethers';
 import Stats from './Stats';
 
 const Tamagochi = () => {
+  const stageImage = [
+    './src/assets/stage_1.png',
+    './src/assets/stage_2.png',
+    './src/assets/stage_3.png',
+    './src/assets/stage_4.png',
+    './src/assets/stage_5.png',
+    './src/assets/stage_6.png',
+  ];
   const [readContract, setReadContract] = useState();
   const [writeContract, setWriteContract] = useState();
   const [giveCreatureName, setGiveCreatureName] = useState('');
@@ -136,6 +144,11 @@ const Tamagochi = () => {
           onChange={(e) => setGiveCreatureName(e.target.value)}
         />
       </form>
+
+      <div>
+        <img src={stageImage[Number(creatureStage)]} alt="stage" />
+      </div>
+
       <button onClick={() => createCreature(giveCreatureName)}>
         Create Tamagochi
       </button>
